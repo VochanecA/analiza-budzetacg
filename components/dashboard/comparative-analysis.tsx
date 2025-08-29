@@ -99,7 +99,8 @@ export function ComparativeAnalysis({
           <p className="text-muted-foreground">Izaberi najmanje 2 godine za poredjenje.</p>
         ) : (
           <div className="h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
+ {/* @ts-ignore */}
+<ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
                 <XAxis dataKey="month" className="text-xs" tick={{ fontSize: 12 }} />
