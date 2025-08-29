@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { FinancialData } from '@/types/financial';
 import { formatCurrency } from '@/lib/financial-utils';
@@ -29,13 +28,11 @@ export function ComparativeAnalysis({
   const [aiResult, setAiResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Default pitanje (skriveno, koristi se samo ako korisnik ništa ne unese)
+  // Skriveno, koristi se samo kod poziva AI-ja
   const defaultQuestion =
     "Napravi jednostavnu i jasnu analizu prikazanih finansijskih podataka sa fokusom na trendove i ključne rizike.";
 
-  const [customQuestion, setCustomQuestion] = useState<string>("");
-
-  const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  const months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 
   const chartData = months.map((month) => {
     const point: { month: string; [key: string]: string | number } = { month };
@@ -68,10 +65,10 @@ export function ComparativeAnalysis({
 
     setLoading(true);
     try {
-      const financialDataStr = JSON.stringify(chartData, null, 2); // koristimo samo ono što je na grafikonu
+      const financialDataStr = JSON.stringify(chartData, null, 2); 
       const result = await client.analyzeFinancialData({
         financialData: financialDataStr,
-        question: customQuestion.trim() === "" ? defaultQuestion : customQuestion,
+        question: defaultQuestion, // koristi se predefinisano pitanje
         context: "Ovo je vizualizacija finansijskih indikatora kroz godine, prikazana na grafikonu."
       });
       setAiResult(result);
@@ -91,12 +88,6 @@ export function ComparativeAnalysis({
             <CardDescription>{description}</CardDescription>
           </div>
           <div className="flex gap-2 w-full md:w-auto">
-            <Input
-              value={customQuestion}
-              onChange={(e) => setCustomQuestion(e.target.value)}
-              placeholder="Postavi pitanje za AI analizu..."
-              className="flex-1"
-            />
             <Button onClick={handleAIAnalysis} disabled={loading}>
               {loading ? 'Analiziram...' : 'Napravi AI Analizu'}
             </Button>

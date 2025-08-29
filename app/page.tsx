@@ -140,36 +140,46 @@ export default function FinancialDashboard() {
 
   return (
     <div className="min-h-screen bg-background font-sans antialiased">
-      <header className="border-b bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm sticky top-0 z-10 shadow-md">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent dark:from-blue-400 dark:via-purple-400 dark:to-blue-400">
-             Analiza realizacije budžeta Crne Gore
-              </h1>
-              <p className="text-gray-600 dark:text-gray-300 mt-2">
-                Analiza u realnom vremenu sa AI-powered analizom
-              </p>
-            </div>
-            <div className="text-right space-y-2">
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                Period: {startDate} do {endDate}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {availableIndicators.length} indikatora dostupno
-              </p>
-              {latestYearMonths.length > 0 && (
-                <p className="text-xs text-green-600 dark:text-green-400 font-medium">
-                  Podaci za najnoviju godinu (2025)
-                </p>
-              )}
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Upoređivanje: {selectedYears.join(', ') || 'Nije odabrano'}
-              </p>
-            </div>
-          </div>
+<header className="border-b bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm sticky top-0 z-10 shadow-md">
+  <div className="container mx-auto px-4 py-6">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        {/* Favicon ikona */}
+        <img
+          src="/icons/favicon.ico"
+          alt="Logo"
+          className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
+        />
+        <div>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent dark:from-blue-400 dark:via-purple-400 dark:to-blue-400">
+            Analiza realizacije budžeta Crne Gore
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">
+            Analiza u realnom vremenu sa AI-powered analizom
+          </p>
         </div>
-      </header>
+      </div>
+
+      <div className="text-right space-y-2">
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          Period: {startDate} do {endDate}
+        </p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          {availableIndicators.length} indikatora dostupno
+        </p>
+        {latestYearMonths.length > 0 && (
+          <p className="text-xs text-green-600 dark:text-green-400 font-medium">
+            Podaci za najnoviju godinu (2025)
+          </p>
+        )}
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          Upoređivanje: {selectedYears.join(', ') || 'Nije odabrano'}
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
 
       <main className="container mx-auto px-4 py-8 space-y-8">
         <div className="grid grid-cols-1 gap-6">
@@ -292,7 +302,7 @@ export default function FinancialDashboard() {
       <footer className="border-t bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm mt-12">
         <div className="container mx-auto px-4 py-6">
           <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Finansijski Analitički Dashboard - Code by @Fidelity_cg & VA</p>
+            <p>Analiza Realizacije budžeta Crne Gore - Code by @Fidelity_cg & VA</p>
             <p className="mt-1">© {new Date().getFullYear()} - Sva prava zadržana</p>
           </div>
         </div>

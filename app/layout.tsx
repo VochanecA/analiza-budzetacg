@@ -9,9 +9,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Financial Analytics Dashboard',
-  description: 'Advanced financial analysis and forecasting platform with AI-powered insights',
+  title: "Analiza realizacije Budžeta Crne Gore",
+  description: "Kreirano: @Fidelity_cg i X zajednica",
   keywords: 'financial analysis, economic data, Monte Carlo simulation, government finance',
+  icons: {
+    icon: '/icons/favicon.ico',
+  },
 };
 
 export default function RootLayout({

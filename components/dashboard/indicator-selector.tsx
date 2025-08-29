@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search } from "lucide-react";
 
@@ -58,6 +57,11 @@ export function IndicatorSelector({
       alert('Možete odabrati najviše 5 godina za poređenje.');
     }
   };
+
+  // Selektuj prihode po defaultu pri prvom renderu
+  useEffect(() => {
+    quickSelect("revenue");
+  }, []); // prazna lista zavisnosti znači da se izvršava samo jednom
 
   useEffect(() => {
     console.log("Selected indicators:", selectedIndicators);
