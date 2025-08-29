@@ -140,41 +140,75 @@ export default function FinancialDashboard() {
 
   return (
     <div className="min-h-screen bg-background font-sans antialiased">
-<header className="border-b bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm sticky top-0 z-10 shadow-md">
-  <div className="container mx-auto px-4 py-6">
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        {/* Favicon ikona */}
-        <img
-          src="/icons/favicon.ico"
-          alt="Logo"
-          className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
-        />
-        <div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent dark:from-blue-400 dark:via-purple-400 dark:to-blue-400">
-            Analiza realizacije budžeta Crne Gore
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-2">
-            Analiza u realnom vremenu sa AI-powered analizom
-          </p>
+<header className="border-b bg-white/95 dark:bg-slate-900/95 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+  <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4 lg:py-6">
+    <div className="flex flex-col gap-3 sm:gap-4">
+      {/* Main header row */}
+      <div className="flex items-start justify-between gap-3">
+        {/* Logo and title section */}
+        <div className="flex items-start gap-2 sm:gap-3 flex-1 min-w-0">
+          <img
+            src="/icons/favicon.ico"
+            alt="Logo"
+            className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 object-contain flex-shrink-0 mt-1"
+          />
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent dark:from-blue-400 dark:via-purple-400 dark:to-blue-400 leading-tight">
+              Analiza realizacije budžeta Crne Gore
+            </h1>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2 hidden sm:block">
+              Analiza u realnom vremenu sa AI-powered analizom
+            </p>
+          </div>
+        </div>
+
+        {/* Status indicator - mobile */}
+        <div className="flex sm:hidden items-center justify-center">
+          {latestYearMonths.length > 0 && (
+            <div className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full">
+              <span className="text-xs font-medium">2025</span>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="text-right space-y-2">
-        <p className="text-sm text-gray-600 dark:text-gray-300">
-          Period: {startDate} do {endDate}
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          {availableIndicators.length} indikatora dostupno
-        </p>
-        {latestYearMonths.length > 0 && (
-          <p className="text-xs text-green-600 dark:text-green-400 font-medium">
-            Podaci za najnoviju godinu (2025)
-          </p>
-        )}
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          Upoređivanje: {selectedYears.join(', ') || 'Nije odabrano'}
-        </p>
+      {/* Mobile subtitle */}
+      <p className="text-xs text-gray-600 dark:text-gray-300 sm:hidden -mt-2">
+        Analiza u realnom vremenu sa AI-powered analizom
+      </p>
+
+      {/* Info section */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 text-xs sm:text-sm">
+        {/* Left info */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-gray-600 dark:text-gray-300">
+              Period: <span className="font-medium">{startDate} - {endDate}</span>
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500 dark:text-gray-400">
+              <span className="font-medium text-blue-600 dark:text-blue-400">{availableIndicators.length}</span> indikatora
+            </span>
+          </div>
+        </div>
+
+        {/* Right info */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+          {latestYearMonths.length > 0 && (
+            <div className="hidden sm:flex items-center gap-1">
+              <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+              <span className="text-green-600 dark:text-green-400 font-medium text-xs">
+                Najnoviji podaci (2025)
+              </span>
+            </div>
+          )}
+          <div className="text-gray-500 dark:text-gray-400">
+            Upoređivanje: <span className="font-medium text-gray-700 dark:text-gray-300">
+              {selectedYears.length > 0 ? selectedYears.join(', ') : 'Nije odabrano'}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
