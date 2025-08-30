@@ -295,7 +295,7 @@ Ukupno budžetskih kategorija: ${overviewData.totalIndicators}
               Finansijska Analiza
               <Badge variant="outline" className="ml-2">
                 <Sparkles className="w-3 h-3 mr-1" />
-                Powered by DeepSeek
+                Pokretano sa DeepSeek AI
               </Badge>
             </CardTitle>
             <Button
