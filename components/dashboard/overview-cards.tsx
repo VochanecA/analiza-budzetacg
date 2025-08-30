@@ -24,8 +24,8 @@ export function OverviewCards({ data }: OverviewCardsProps) {
   // Funkcija za generisanje hash-a od podataka za praćenje promjena
   const generateDataHash = (data: FinancialData) => {
     return JSON.stringify({
-      revenueKeys: Object.keys(data["Total Revenues, Euros"] || {}),
-      revenueValues: Object.values(data["Total Revenues, Euros"] || {})
+      revenueKeys: Object.keys(data["Ukupni Prihodi, Euro"] || data["Total Revenues, Euros"] || {}),
+      revenueValues: Object.values(data["Ukupni Prihodi, Euro"] || data["Total Revenues, Euros"] || {})
     });
   };
 
@@ -57,22 +57,103 @@ export function OverviewCards({ data }: OverviewCardsProps) {
     setLoading(true);
     
     try {
-      // Prepare overview data for analysis
+      // Prepare overview data for analysis - support both English and Serbian indicator names
+      const revenueIndicator = data["Ukupni Prihodi, Euro"] ? "Ukupni Prihodi, Euro" : "Total Revenues, Euros";
+      const expenditureIndicator = data["Ukupni Rashodi, Euro"] ? "Ukupni Rashodi, Euro" : "Total Expenditures, Euros";
+      const taxIndicator = data["Porezi, Euro"] ? "Porezi, Euro" : "Taxes, Euros";
+
       const overviewData = {
-        revenue: getIndicatorStats("Total Revenues, Euros"),
-        expenditure: getIndicatorStats("Total Expenditures, Euros"),
-        tax: getIndicatorStats("Taxes, Euros"),
+        revenue: getIndicatorStats(revenueIndicator),
+        expenditure: getIndicatorStats(expenditureIndicator),
+        tax: getIndicatorStats(taxIndicator),
         surplus: calculateSurplus(),
-        periods: Object.keys(data["Total Revenues, Euros"] || {}).length,
-        totalIndicators: Object.keys(data).length
+        periods: Object.keys(data[revenueIndicator] || {}).length,
+        totalIndicators: Object.keys(data).length,
+        availableMonths: Object.keys(data[revenueIndicator] || {}).sort(),
+        indicatorNames: Object.keys(data).slice(0, 10) // First 10 for context
       };
 
       const dataStr = JSON.stringify(overviewData, null, 2);
       
       const result = await aiClient.analyzeFinancialData({
         financialData: dataStr,
-        question: "Pružite sveobuhvatnu analizu ovih finansijskih overview metrika. Fokusirajte se na: obrasce prihoda u odnosu na rashode, fiskalno zdravlje, performanse poreza i ukupnu finansijsku održivost. Istaknite ključne trendove, rizike i mogućnosti.",
-        context: "Ovo je analiza overview finansijskih podataka vlade iz dashboarda."
+        question: `
+**ANALIZA REALIZACIJE DRŽAVNOG BUDŽETA CRNE GORE**
+
+Kao ekspert za javne finansije i budžetsku politiku, pružite detaljnu analizu realizacije državnog budžeta sa fokusom na:
+
+## OSNOVNE METRIKE I PERFORMANSE
+• **Budžetski bilans**: Analizirajte suficit/deficit i primarni bilans
+• **Stopa realizacije**: Poredite planirane vs. ostvarene prihode i rashode
+• **Fiskalna disciplina**: Ocenite poštovanje budžetskih ograničenja
+
+## ANALIZA PRIHODA
+• **Poreska efikasnost**: Performanse PDV-a, poreza na dobit, akciza i drugih poreza
+• **Diverzifikacija prihoda**: Zavisnost od pojedinih poreskih kategorija
+• **Sezonalnost**: Identifikujte mesečne i kvartalne obrasce naplate
+• **Poreska elastičnost**: Kako porezi reaguju na ekonomske promene
+
+## ANALIZA RASHODA
+• **Struktura rashoda**: Odnos tekućih vs. kapitalnih rashoda
+• **Efikasnost trošenja**: Analiza rashoda po kategorijama (plate, usluge, investicije)
+• **Socijalni transferi**: Održivost sistema socijalnog osiguranja
+• **Investicioni kapacitet**: Sposobnost finansiranja kapitalnih projekata
+
+## FISKALNA ODRŽIVOST
+• **Dugoročna održivost**: Trendovi koji utiču na buduće fiskalne pozicije
+• **Ciklični vs. strukturni bilans**: Razlikujte privremene od trajnih fiskalnih pritisaka
+• **Demografski izazovi**: Uticaj starenja stanovništva na javne finansije
+• **Dužnička održivost**: Implikacije za buduće potrebe za finansiranjem
+
+## RIZICI I IZAZOVI
+• **Makroekonomski rizici**: Osetljivost na ekonomske šokove
+• **Institucionalni rizici**: Kvalitet fiskalnih pravila i upravljanja
+• **Vanjski faktori**: Uticaj EU integracija, regionalnih trendova
+• **Klimatski i pandemijski rizici**: Pripremljenost za vanredne situacije
+
+## PREPORUKE I MOGUĆNOSTI
+• **Kratkoročne mere**: Konkretni koraci za poboljšanje fiskalne pozicije
+• **Srednjoročne reforme**: Strukturne promene za veću efikasnost
+• **Dugoročna strategija**: Vizija održivog fiskalnog okvira
+• **Najbolje prakse**: Uporedite sa EU standardima i regionalnim zemljama
+
+## BENCHMARK ANALIZA
+• Uporedite sa:
+  - EU prosjekom za slične makroekonomske indikatore
+  - Maastrichtskim kriterijumima (deficit 3% GDP, dug 60% GDP)
+  - Regionalnim zemljama (Srbija, Severna Makedonija, Albanija)
+  - Istorijskim performansama Crne Gore
+
+**Ton i format odgovora:**
+- Koristite crnogorski/srpski jezik
+- Budite precizni i faktografski
+- Koristite konkretne brojeve i postotke
+- Struktuirajte odgovor sa jasnim sekcijama
+- Istaknite ključne nalaze bold formatom
+- Završite sa 3-5 konkretnih preporuka
+
+**Fokusirajte se na praktične uvide koji mogu pomoći donosiocima odluka u:**
+- Budžetskom planiranju za narednu godinu
+- Identifikovanju prostora za fiskalne reforme  
+- Upravljanju fiskalnim rizicima
+- Poboljšanju transparentnosti i efikasnosti javnih finansija
+        `,
+        context: `
+Ovo je analiza realizacije državnog budžeta Crne Gore na mesečnom nivou. 
+Podaci pokrivaju ${overviewData.periods} mesečnih perioda i uključuju osnovne budžetske kategorije.
+Analizirajte podatke u kontekstu:
+- Evropskih integracija Crne Gore
+- Post-COVID ekonomskog oporavka  
+- Geopolitičkih izazova u regionu
+- Strukturnih reformi javnih finansija
+- Demografskih trendova u zemlji
+
+Budžet Crne Gore je denomonovan u eurima, što eliminishe valutni rizik ali ograničava monetarnu politiku.
+Fokusirajte se na ključne indikatore: prihode, rashode, neto bilans i poreske performanse.
+
+Dostupni mesečni periodi: ${overviewData.availableMonths.join(', ')}
+Ukupno budžetskih kategorija: ${overviewData.totalIndicators}
+        `
       });
 
       setAnalysis(result);
@@ -91,15 +172,19 @@ export function OverviewCards({ data }: OverviewCardsProps) {
     setShowAnalysis(false);
   };
 
-  // Remove the leading spaces from indicator names
-  const revenueStats = getIndicatorStats("Total Revenues, Euros");
-  const expenditureStats = getIndicatorStats("Total Expenditures, Euros");
-  const taxStats = getIndicatorStats("Taxes, Euros");
+  // Support both English and Serbian indicator names
+  const revenueIndicator = data["Ukupni Prihodi, Euro"] ? "Ukupni Prihodi, Euro" : "Total Revenues, Euros";
+  const expenditureIndicator = data["Ukupni Rashodi, Euro"] ? "Ukupni Rashodi, Euro" : "Total Expenditures, Euros";
+  const taxIndicator = data["Porezi, Euro"] ? "Porezi, Euro" : "Taxes, Euros";
+
+  const revenueStats = getIndicatorStats(revenueIndicator);
+  const expenditureStats = getIndicatorStats(expenditureIndicator);
+  const taxStats = getIndicatorStats(taxIndicator);
   
   // Calculate surplus/deficit since it doesn't exist in the data
   const calculateSurplus = () => {
-    const revenueValues = Object.values(data["Total Revenues, Euros"] || {});
-    const expenditureValues = Object.values(data["Total Expenditures, Euros"] || {});
+    const revenueValues = Object.values(data[revenueIndicator] || {});
+    const expenditureValues = Object.values(data[expenditureIndicator] || {});
     
     if (revenueValues.length === 0 || expenditureValues.length === 0) {
       return { total: 0, growthRate: 0 };

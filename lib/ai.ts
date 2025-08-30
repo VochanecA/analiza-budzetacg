@@ -22,7 +22,7 @@ export class FinancialAI {
 
   async analyzeFinancialData({
     financialData,
-    question = "Provide a comprehensive analysis of this financial data",
+    question = "Act as financial expert for state budget, in IMF and Wolrd Banks, with experince in Goverment of EU country. Provide a comprehensive analysis of this financial data",
     context = ""
   }: AnalysisRequest): Promise<string> {
     try {
